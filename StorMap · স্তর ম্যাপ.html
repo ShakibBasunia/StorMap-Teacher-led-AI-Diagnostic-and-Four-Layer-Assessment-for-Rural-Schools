@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>StorMap · স্তর ম্যাপ</title>
+<style>
+:root{color-scheme:light;--fg:#1f2a2e;--mut:#6b7a7d;--bg2:#f4f8f7;--bd:#dbe4e2;--teal:#2b6b63;--gold:#c08a22;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#fff;color:var(--fg);font:16px/1.55 "Nirmala UI","Noto Sans Bengali",system-ui,sans-serif;padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+.w{max-width:720px;margin:0 auto;padding:0 14px}
+header{background:var(--teal);color:#fff;padding:14px 0}header .w{display:flex;justify-content:space-between;align-items:center}header b{font-size:18px}header small{display:block;color:#cfe3df;font-size:12px}
+.q1{width:36px;height:36px;border-radius:50%;background:#ffffff26;color:#fff;border:0;font-size:18px;font-weight:700}
+button,input,select,textarea{font:inherit;color:var(--fg)}
+button{cursor:pointer;border:0;border-radius:12px;padding:10px 16px;background:var(--teal);color:#fff;font-weight:700}button.alt{background:var(--bg2);color:var(--teal);border:1px solid var(--bd)}button:disabled{opacity:.45}
+input,select,textarea{background:#fff;border:1px solid #b9c8c5;border-radius:10px;padding:9px 12px;width:100%}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--bd);display:flex;padding-bottom:env(safe-area-inset-bottom,0px);z-index:9}
+.tabs button{flex:1;background:none;color:var(--mut);border-radius:0;padding:8px 2px 7px;font-size:12px;display:flex;flex-direction:column;align-items:center;gap:1px}.tabs button span{font-size:20px}.tabs button.on{color:var(--teal);box-shadow:inset 0 3px 0 var(--gold)}
+.v{display:none;padding-top:14px}.v.on{display:block}
+h2{font-size:20px;margin:4px 0 12px;color:var(--teal)}
+.row{display:flex;gap:8px;align-items:center;margin:10px 0}.row>*{flex:none}.row .g1{flex:1}
+.chip{display:inline-block;padding:2px 10px;border-radius:12px;font-size:12px;font-weight:700;white-space:nowrap}.t1{background:#d6ebe5;color:#1d5a50}.t2{background:#f6e2b3;color:#6b4e10}.bd{background:#e9dcf4;color:#503a66}
+details{border:1px solid var(--bd);border-radius:12px;margin:8px 0;background:#fff}summary{padding:12px 14px;cursor:pointer;font-weight:700;display:flex;justify-content:space-between;gap:8px;list-style:none}summary::-webkit-details-marker{display:none}summary::after{content:"＋";color:var(--teal)}details[open]>summary::after{content:"－"}.dd{padding:0 14px 12px}
+.tag{font-size:11px;color:#fff;border-radius:10px;padding:1px 9px;margin-left:6px;font-weight:400}.ans{display:none;background:#e9f4f1;color:#1d5a50;border-radius:8px;padding:6px 10px;margin-top:8px;font-size:14px}.show .ans{display:block}
+.who{display:flex;gap:8px;align-items:center}.who input{text-align:center;font-weight:700;font-size:18px}.who button{width:48px;padding:10px 0;font-size:20px}
+.live{background:var(--bg2);border-radius:12px;padding:10px 14px;margin:10px 0;position:sticky;top:0;z-index:3;border:1px solid var(--bd)}.live small{color:var(--mut);display:block}
+.gr h4{margin:16px 0 6px;font-size:14px;color:var(--c)}.tr{margin:8px 0}.tr>span{display:block;font-size:14px;margin-bottom:3px}
+.pl{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}.pl button{background:#fff;color:var(--fg);border:1px solid #b9c8c5;padding:11px 0;border-radius:10px}.pl button.on{background:var(--c);color:#fff;border-color:var(--c)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px}.cards button{background:var(--bg2);color:var(--fg);border:1px solid var(--bd);padding:8px 2px;font-weight:400;font-size:12px}.cards button b{display:block;font-size:22px;color:var(--teal)}.cards button.on{border-color:var(--teal);box-shadow:inset 0 0 0 1px var(--teal)}
+.it{border:1px solid var(--bd);border-radius:12px;margin:8px 0;padding:10px 14px}.it .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;cursor:pointer}.it .top b{font-size:17px;min-width:48px}
+.m{display:flex;gap:3px;margin-left:auto}.m i{display:block;width:26px;height:8px;background:#e5ecea;border-radius:4px;overflow:hidden}.m i s{display:block;height:100%;background:var(--teal)}.m i.w s{background:#d29a2f}
+.det{margin-top:10px;padding-top:10px;border-top:1px dashed var(--bd);font-size:14px}.det .row{margin:8px 0 0}
+.bar{display:grid;grid-template-columns:120px 1fr 42px;gap:8px;align-items:center;margin:5px 0;font-size:13px}.bar div{height:12px;background:#e5ecea;border-radius:6px;overflow:hidden}.bar i{display:block;height:100%;background:var(--teal)}.bar i.w{background:#d29a2f}
+.ac{border:1px solid var(--bd);border-radius:14px;padding:14px;margin:10px 0}.ac b{display:block;margin-bottom:8px}
+.out{white-space:pre-wrap;background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:12px 14px;margin-top:10px;min-height:48px;font-size:15px}
+.empty{text-align:center;color:var(--mut);padding:30px 10px}small,.mut{color:var(--mut);font-size:13px}
+dialog{border:0;border-radius:16px;padding:20px;max-width:420px;width:calc(100% - 28px);box-shadow:0 10px 40px #0004}dialog::backdrop{background:#0006}dialog ol{padding-left:20px;margin:8px 0 14px}dialog li{margin:6px 0}
+@media print{header,.tabs,.np,.v:not(#v-test){display:none!important}.v{display:block!important}details{break-inside:avoid}}
+.lg{display:flex;gap:12px;align-items:center}.lg b{font-size:21px;letter-spacing:.2px}.lg b span{font-size:14px;color:#f2d9a0;font-weight:700;margin-left:4px}
+header{background:linear-gradient(135deg,#2b6b63 0%,#1b4b46 100%)}
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:6px}.tile{background:#fff;color:var(--fg);border:1px solid var(--bd);border-radius:10px;padding:5px 5px 6px;font-weight:400}.tile b{display:block;font-size:11px;margin-bottom:3px;color:var(--mut)}.tile s{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:2px;text-decoration:none}.tile s i{display:block;height:9px;border-radius:3px}.tile s.c i{height:5px;opacity:.85}
+.lgd{display:flex;gap:14px;margin:10px 0 4px;font-size:12px;color:var(--mut)}.lgd i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:4px;vertical-align:-2px}
+.rd{display:flex;gap:10px;align-items:center;font-size:14px;margin:8px 0;background:#eef5fa;border-radius:10px;padding:8px 12px}.rd input{width:20px;height:20px;flex:none}.chip.rdc{background:#dcecf6;color:#245a7a}.lv{font-size:11px;color:var(--mut);margin-left:6px}
+.hero{background:linear-gradient(135deg,#e5f1ee,#fbf3df);border:1px solid var(--bd);border-radius:16px;padding:18px 18px 14px}.hero b{font-size:24px;color:var(--teal)}.hero p{margin:4px 0 0;color:var(--mut)}
+.hs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0}.hs div{background:var(--bg2);border:1px solid var(--bd);border-radius:12px;padding:8px 6px;text-align:center;font-size:12px;color:var(--mut)}.hs b{display:block;font-size:24px;color:var(--teal);line-height:1.2}
+.acts{display:grid;gap:10px;margin:12px 0}.act{display:flex;gap:14px;align-items:center;text-align:left;background:#fff;color:var(--fg);border:1px solid var(--bd);border-radius:14px;padding:14px 16px;font-weight:400;box-shadow:0 1px 4px #0001;width:100%}.act span{font-size:26px}.act b{display:block;color:var(--teal);font-size:16px}.act small{color:var(--mut)}.act.cont{background:var(--teal);color:#fff;margin-top:0;justify-content:center;font-weight:700}
+.tabs button span{font-size:19px}
+</style></head><body>
+<header><div class="w"><div class="lg"><svg width="38" height="38" viewBox="0 0 38 38" aria-hidden="true"><rect x="3" y="24" width="8" height="11" rx="2" fill="#f2d9a0"/><rect x="15" y="16" width="8" height="19" rx="2" fill="#fff"/><rect x="27" y="6" width="8" height="29" rx="2" fill="#f2d9a0"/></svg><div><b>StorMap <span>স্তর ম্যাপ</span></b><small>ফোন ছাড়াই প্রতিটি শিক্ষার্থীর প্রকৃত স্তরের মানচিত্র</small></div></div><button class="q1" id="hb" aria-label="সাহায্য">?</button></div></header>
+<dialog id="hd"><b style="font-size:18px;color:var(--teal)">৪ ধাপে কাজ</b><ol><li><b>প্রশ্নপত্র</b> ছাপিয়ে গণিত, বিজ্ঞান ও আইসিটির পরীক্ষা নিন।</li><li><b>ফল তোলা</b>: কোড দিয়ে, নাম নয়। ১২টি পরীক্ষায় ০-৫।</li><li><b>ফলাফল</b>: ক্লাসের মানচিত্রে ঘাটতি এক নজরে। ট্র্যাক আপনি বদলাতে পারেন।</li><li><b>এআই</b> খসড়া দেয়। যাচাই করে ব্যবহার করুন।</li></ol><small>তিন বিষয়ের যেকোনোটিতে ভিত্তি-স্তর (স্তর ১) সীমার নিচে হলে ট্র্যাক ২। ডেটা শুধু এই ব্রাউজারে থাকে, এআই-কে শুধু সংখ্যা যায়।</small><div class="row"><button class="g1" id="hx">বুঝেছি</button></div></dialog>
+<div class="w">
+
+<section class="v on" id="v-home">
+<div class="hero"><b>স্বাগতম</b><p>তিন ধাপে ক্লাসের প্রকৃত স্তর চিনুন। ফোন ছাড়া, শিক্ষার্থীর নাম ছাড়া।</p></div>
+<div class="hs" id="hs"></div>
+<button class="act cont" id="cont" hidden></button>
+<div class="acts">
+<button class="act" data-go="test"><span>📄</span><div><b>১. পরীক্ষা নিন</b><small>প্রশ্নপত্র দেখুন ও ছাপুন</small></div></button>
+<button class="act" data-go="in"><span>✏️</span><div><b>২. ফল তুলুন</b><small>কোড দিয়ে নম্বর দিন</small></div></button>
+<button class="act" data-go="res"><span>📊</span><div><b>৩. ফলাফল দেখুন</b><small>ক্লাসের মানচিত্র ও ট্র্যাক</small></div></button>
+<button class="act" data-go="ai"><span>✨</span><div><b>এআই সহকারী</b><small>পরিকল্পনা, ওয়ার্কশিট, ফিডব্যাক</small></div></button>
+</div>
+<div class="row"><button class="alt g1" id="hh">কীভাবে কাজ করে?</button></div>
+</section>
+<section class="v" id="v-test"><h2>প্রশ্নপত্র</h2>
+<div class="row np"><button class="alt" id="ak">উত্তর-সূত্র</button><button class="alt" id="pr">ছাপুন</button></div><div id="tp"></div></section>
+
+<section class="v" id="v-in"><h2>ফল তোলা</h2>
+<div class="who"><button class="alt" id="pv">‹</button><input id="code" aria-label="কোড"><button class="alt" id="nx">›</button><button id="nw">＋</button></div>
+<div class="mut" id="pos" style="text-align:center;margin-top:4px"></div>
+<div id="ent"></div>
+<details class="np" style="margin-top:20px"><summary>এক্সেল থেকে পেস্ট</summary><div class="dd"><small>প্রতি লাইনে: কোড, তারপর ১২টি নম্বর (০-৫)</small><textarea id="paste" rows="4" placeholder="S001, 4,3,5,2,3,4,3,3,2,2,3,1"></textarea><div class="row"><button id="imp">যোগ করুন</button></div></div></details>
+</section>
+
+<section class="v" id="v-res"><h2>ফলাফল</h2>
+<div class="cards" id="cards"></div><details open><summary>ক্লাসের মানচিত্র</summary><div class="dd"><div class="map" id="map"></div><div class="lgd"><span><i style="background:#d96b4f"></i>ঘাটতি</span><span><i style="background:#e0a93b"></i>মাঝারি</span><span><i style="background:#3a9a82"></i>ভালো</span></div><small>প্রতি ঘরে বাঁ থেকে ডানে: গণিত, বিজ্ঞান, আইসিটি। ওপরের সারি ভিত্তি (স্তর ১), নিচের সারি ষষ্ঠ শ্রেণির স্তর। ঘরে ট্যাপ করলে নম্বর খোলে।</small></div></details><div id="list"></div>
+<details><summary>ক্লাসের চিত্র</summary><div class="dd"><div id="bars"></div></div></details>
+<details><summary>সেটিং ও ডাউনলোড</summary><div class="dd"><label class="mut">ঘাটতির সীমা (%)</label><input type="number" id="thr" min="10" max="90" step="5"><div class="row"><button class="alt g1" id="csv">CSV ডাউনলোড</button><button class="alt" id="clr">সব মুছুন</button></div></div></details></section>
+
+<section class="v" id="v-ai"><h2>এআই সহকারী</h2><div id="ai" hidden>
+<div class="ac"><b>৪ সপ্তাহের সহায়তা পরিকল্পনা</b><button id="a1">বানান</button></div>
+<div class="ac"><b>ওয়ার্কশিট</b><select id="wa"></select><input id="wt" placeholder="বিষয় (ঐচ্ছিক)" style="margin:8px 0"><button id="a2">বানান</button></div>
+<div class="ac"><b>অভিভাবকের ফিডব্যাক</b><select id="fc"></select><div style="height:8px"></div><button id="a3">বানান</button></div>
+<div class="out" id="out">এখানে খসড়া আসবে।</div><div class="row"><button class="alt" id="cp">কপি</button><button class="alt" id="stop" disabled>থামান</button></div><small>নিজে যাচাই করে ব্যবহার করুন।</small></div>
+<div class="empty" id="noai" hidden>এআই এই ভিউতে চালু নেই। বাকি টুল এআই ছাড়াই চলে।</div></section>
+</div>
+<nav class="tabs"><button data-v="home" class="on"><span>🏠</span>হোম</button><button data-v="test"><span>📄</span>প্রশ্নপত্র</button><button data-v="in"><span>✏️</span>ফল তোলা</button><button data-v="res"><span>📊</span>ফলাফল</button><button data-v="ai"><span>✨</span>এআই</button></nav>
+<script>
+const $=id=>document.getElementById(id),bn=s=>String(s).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const S=[['গণিত','#2b6b63'],['বিজ্ঞান','#b0771a'],['আইসিটি','#3f7f9a']];
+// [বিষয়, পরীক্ষা, স্তর, প্রশ্ন, উত্তর/নিয়ম]
+const T=[
+[0,'সংখ্যা ও যোগ-বিয়োগ',1,'(ক) ৩৪৫-এর পরের সংখ্যা কত? (খ) ৪০৭ কথায় লেখো। (গ) ২৮ + ১৫ (ঘ) ৪৫৬ + ২৭৮ (ঙ) ৫০০ − ২৭৫','উত্তর: ৩৪৬ · চারশ সাত · ৪৩ · ৭৩৪ · ২২৫। প্রতিটি ১ নম্বর।'],
+[0,'গুণ ও ভাগ',1,'(ক) ৬ × ৭ (খ) ১২ × ৫ (গ) ২৩ × ৪ (ঘ) ১২ ÷ ৩ (ঙ) ৭২ ÷ ৮','উত্তর: ৪২ · ৬০ · ৯২ · ৪ · ৯। প্রতিটি ১ নম্বর।'],
+[0,'ভগ্নাংশ',2,'(ক) ১/২ + ১/৪ (খ) ৩/৫ আর ২/৫, কোনটি বড়? (গ) ১/২ = ?/৪ (ঘ) ২/৩ + ১/৩ (ঙ) ৩/৪ − ১/৪','উত্তর: ৩/৪ · ৩/৫ · ২ · ১ · ২/৪ (বা ১/২)। প্রতিটি ১ নম্বর।'],
+[0,'ক্ষেত্রফল ও পরিমাপ',2,'(ক) আয়তক্ষেত্রের দৈর্ঘ্য ৮ মি., প্রস্থ ৫ মি.। ক্ষেত্রফল কত? (খ) বর্গের বাহু ৬ সেমি। পরিসীমা কত? (গ) ত্রিভুজের ভূমি ১০ সেমি, উচ্চতা ৪ সেমি। ক্ষেত্রফল কত? (ঘ) ১ মিটারে কত সেন্টিমিটার? (ঙ) ১ কেজিতে কত গ্রাম?','উত্তর: ৪০ বর্গমি. · ২৪ সেমি · ২০ বর্গসেমি · ১০০ · ১০০০। প্রতিটি ১ নম্বর।'],
+[1,'জীব, জড় ও প্রকৃতি',1,'(ক) একটি জীব ও একটি জড় বস্তুর নাম বলো। (খ) গাছ কীভাবে নিজের খাবার পায়? (গ) আমরা কোন অঙ্গ দিয়ে দেখি? (ঘ) পানির দুটি অবস্থার নাম বলো। (ঙ) দিনে আলো ও তাপ কার কাছ থেকে পাই?','(ক) যেমন গরু ও পাথর (খ) সূর্যের আলো, পানি ও বাতাস থেকে নিজে তৈরি করে (গ) চোখ (ঘ) কঠিন, তরল বা গ্যাস (ঙ) সূর্য। প্রতিটি ১ নম্বর।'],
+[1,'স্বাস্থ্য ও পরিবেশ',1,'(ক) হাত ধোয়া কেন জরুরি? (খ) পানি কোথা থেকে আসে? (গ) দুটি পুষ্টিকর খাবারের নাম বলো। (ঘ) যেখানে-সেখানে ময়লা ফেললে কী ক্ষতি হয়? (ঙ) বন্যার সময় খাবার পানি নিরাপদ রাখতে কী করবে?','যেকোনো যুক্তিসঙ্গত উত্তরে প্রতিটি ১ নম্বর। (ক) জীবাণু দূর হয় (খ) বৃষ্টি, নদী, ভূগর্ভ (ঙ) ফুটিয়ে বা শোধন করে ঢেকে রাখা।'],
+[1,'কোষ ও জীবজগৎ',2,'(ক) কোষ কী? এক বাক্যে বলো। (খ) উদ্ভিদ ও প্রাণীকোষের একটি পার্থক্য বলো। (গ) সালোকসংশ্লেষণে গাছ কী কী ব্যবহার করে? (ঘ) খাদ্যশৃঙ্খলে উৎপাদক কারা? (ঙ) একটি খাদ্যশৃঙ্খল লেখো।','(ক) জীবের গঠনের ক্ষুদ্রতম একক (খ) উদ্ভিদকোষে কোষপ্রাচীর ও ক্লোরোপ্লাস্ট থাকে (গ) সূর্যের আলো, পানি, কার্বন ডাই-অক্সাইড (ঘ) সবুজ উদ্ভিদ (ঙ) যেমন ঘাস → ফড়িং → ব্যাং → সাপ। প্রতিটি ১ নম্বর।'],
+[1,'পদার্থ, শক্তি ও আলো',2,'(ক) পদার্থ কী? (খ) বরফে তাপ দিলে কী হয়? (গ) আলো আটকে গেলে ছায়া হয় কেন? (ঘ) একটি নবায়নযোগ্য শক্তির উৎসের নাম বলো। (ঙ) বস্তুর ভর মাপার একটি একক বলো।','(ক) যার ভর আছে ও জায়গা দখল করে (খ) গলে পানি হয় (গ) আলো সোজা পথে চলে, আটকে গেলে অন্ধকার অংশ তৈরি হয় (ঘ) সূর্য, বায়ু বা পানি (ঙ) কেজি বা গ্রাম। প্রতিটি ১ নম্বর।'],
+[2,'কম্পিউটার ও ডিভাইস চেনা',1,'যন্ত্র বা ছবি দেখিয়ে মৌখিকভাবে নিন (কম্পিউটার না থাকলে ছবি দেখান)। (ক) কম্পিউটারের দুটি অংশের নাম বলো। (খ) লেখার জন্য কোন অংশ ব্যবহার হয়? (গ) কম্পিউটার চালু করতে কোন বোতাম চাপে? (ঘ) স্মার্টফোন দিয়ে দুটি কাজ বলো। (ঙ) ইন্টারনেট দিয়ে আমরা কী করতে পারি?','(ক) মনিটর, কিবোর্ড, মাউস বা সিপিইউ (খ) কিবোর্ড (গ) পাওয়ার বোতাম (ঘ) যেমন কল করা, ছবি তোলা (ঙ) তথ্য খোঁজা, বার্তা পাঠানো। প্রতিটি ১ নম্বর।'],
+[2,'নিরাপদ ডিজিটাল আচরণ',1,'(ক) অচেনা কাউকে নিজের পাসওয়ার্ড বলা কি ঠিক? (খ) অচেনা লিংকে ক্লিক করার আগে কী করবে? (গ) অনলাইনে কেউ বিরক্ত করলে কী করবে? (ঘ) অনেকক্ষণ ফোন দেখলে কী ক্ষতি হয়? (ঙ) কারও ছবি শেয়ার করার আগে কী ভাবা উচিত?','(ক) না (খ) বড়দের জিজ্ঞেস করবে (গ) বিশ্বাসী বড়কে জানাবে (ঘ) চোখ ও পড়ার ক্ষতি, সময় নষ্ট (ঙ) তার অনুমতি আছে কি না। প্রতিটি ১ নম্বর।'],
+[2,'তথ্য ও যোগাযোগ প্রযুক্তি',2,'(ক) আইসিটির পূর্ণরূপ বলো। (খ) একটি ইনপুট ও একটি আউটপুট ডিভাইসের নাম বলো। (গ) ইমেইল দিয়ে কী করা যায়? (ঘ) তথ্য খোঁজার জন্য কী ব্যবহার করা হয়? (ঙ) ডেটা ও তথ্যের পার্থক্য এক বাক্যে বলো।','(ক) ইনফরমেশন অ্যান্ড কমিউনিকেশন টেকনোলজি (খ) যেমন কিবোর্ড; মনিটর (গ) বার্তা ও ফাইল পাঠানো (ঘ) সার্চ ইঞ্জিন (ঙ) ডেটা কাঁচা তথ্য, প্রক্রিয়া করলে অর্থপূর্ণ তথ্য। প্রতিটি ১ নম্বর।'],
+[2,'এআই ও ধাপে ধাপে ভাবনা',2,'(ক) এআই কী? এক বাক্যে বলো। (খ) এআই-এর উত্তর কি সবসময় ঠিক হয়? (গ) ভাত রান্নার তিনটি ধাপ ক্রমানুসারে লেখো। (ঘ) এআই দিয়ে বাড়ির কাজ করালে কী ক্ষতি হয়? (ঙ) এআই-কে নিজের নাম-ঠিকানা দেওয়া কি ঠিক?','(ক) যে প্রোগ্রাম মানুষের মতো ভাবার চেষ্টা করে, যেমন প্রশ্নের উত্তর দেয় (খ) না, যাচাই করতে হয় (গ) যেকোনো যুক্তিসঙ্গত ধারাবাহিক তিন ধাপ (ঘ) নিজে শেখা হয় না (ঙ) না। প্রতিটি ১ নম্বর।']];
+const N=T.length,ix=(s,l)=>T.map((t,i)=>t[0]==s&&(l==null||t[2]==l)?i:-1).filter(i=>i>=0);
+let rows=[],thr=50,cur=0,flt='all',sample=null,ctl=null;
+try{const s=JSON.parse(localStorage.getItem('dt4')||'null');if(s){rows=s.rows||[];thr=s.thr||50}}catch(e){}
+const save=()=>{try{localStorage.setItem('dt4',JSON.stringify({rows,thr}))}catch(e){}};
+const num=v=>Math.max(0,Math.min(5,Math.round(parseFloat(v)||0)));
+const pct=(r,s,l)=>{const a=ix(s,l);return Math.round(a.reduce((x,i)=>x+(r.s[i]||0),0)/(a.length*5)*100)};
+const col=p=>p<thr?'#d96b4f':p<70?'#e0a93b':'#3a9a82';
+function cls(r){const f=S.map((_,s)=>pct(r,s,1)),c=S.map((_,s)=>pct(r,s,2)),weak=[0,1,2].filter(s=>f[s]<thr),wk=[0,1,2].filter(s=>c[s]<thr);let wt='';
+ if(weak.length){const a=weak.flatMap(s=>ix(s,1));wt=T[a.reduce((m,i)=>(r.s[i]||0)<(r.s[m]||0)?i:m,a[0])][1]}
+ return{t:weak.length?2:1,m:weak.length>1,b:!weak.length&&wk.length>0,f,c,why:weak.length?'ভিত্তিতে ঘাটতি: '+weak.map(s=>S[s][0]+' '+bn(f[s])+'%').join(', ')+'। সবচেয়ে দুর্বল: '+wt:wk.length?'ভিত্তি ঠিক, ষষ্ঠ শ্রেণির স্তরে দুর্বল: '+wk.map(s=>S[s][0]+' '+bn(c[s])+'%').join(', '):'ভিত্তি ও শ্রেণির স্তর ঠিক'}}
+const fin=r=>r.t||cls(r).t,done=r=>r.s.filter(v=>v!=null).length;
+const badge=r=>{const k=cls(r),t=fin(r);return`<span class="chip ${t==1?'t1':'t2'}">ট্র্যাক ${bn(t)}</span>`+(k.m&&t==2?' <span class="chip t2">বেশি সহায়তা</span>':'')+(k.b&&t==1?' <span class="chip bd">সীমারেখা</span>':'')+(r.rd?' <span class="chip rdc">পড়া-সহায়তা</span>':'')};
+const nextCode=()=>{let m=0;rows.forEach(r=>{const x=+(r.c.match(/\d+/)||[0])[0];if(x>m)m=x});return'S'+String(m+1).padStart(3,'0')};
+const newRow=()=>({c:nextCode(),s:Array(N).fill(null),t:null,rd:0});
+
+$('tp').innerHTML=T.map((t,i)=>`<details><summary><span>${bn(i+1)}. ${t[1]}</span><span><span class="tag" style="background:${S[t[0]][1]}">${S[t[0]][0]}</span></span></summary><div class="dd"><small>স্তর ${bn(t[2])} · ৫ নম্বর</small><div style="margin-top:4px">${t[3]}</div><div class="ans">${t[4]}</div></div></details>`).join('');
+$('ak').onclick=()=>$('tp').classList.toggle('show');
+$('pr').onclick=()=>{$('tp').classList.remove('show');document.querySelectorAll('#tp details').forEach(d=>d.open=true);print()};
+$('wa').innerHTML=T.filter(t=>t[2]==1).map(t=>`<option>${S[t[0]][0]}: ${t[1]}</option>`).join('');
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.v));
+function show(v){document.querySelectorAll('.v').forEach(s=>s.classList.toggle('on',s.id=='v-'+v));document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('on',b.dataset.v==v));scrollTo(0,0)}
+$('hb').onclick=()=>$('hd').showModal();$('hx').onclick=()=>$('hd').close();
+try{if(!localStorage.getItem('dt4h')){localStorage.setItem('dt4h',1);setTimeout(()=>$('hd').showModal(),300)}}catch(e){}
+
+function renderIn(){
+ if(!rows.length){$('ent').innerHTML='<div class="empty">কোনো শিক্ষার্থী নেই।<br><br><button onclick="addStu()">＋ প্রথম শিক্ষার্থী</button></div>';$('code').value='';$('pos').textContent='';return}
+ cur=Math.min(cur,rows.length-1);const r=rows[cur];$('code').value=r.c;$('pos').textContent=bn(cur+1)+' / '+bn(rows.length);
+ $('ent').innerHTML=`<div class="live" id="live"></div><label class="rd"><input type="checkbox" id="rd"${r.rd?' checked':''}>পড়তে না পারায় প্রশ্ন পড়ে শোনাতে হয়েছে</label>`+S.map((d,k)=>`<div class="gr" style="--c:${d[1]}"><h4>${d[0]}</h4>`+ix(k).map(i=>`<div class="tr"><span>${T[i][1]}<span class="lv">স্তর ${bn(T[i][2])}</span></span><div class="pl">`+[0,1,2,3,4,5].map(v=>`<button data-i="${i}" data-v="${v}" class="${r.s[i]===v?'on':''}">${bn(v)}</button>`).join('')+'</div></div>').join('')+'</div>').join('')+`<div class="row"><button class="g1" id="nx2">পরের শিক্ষার্থী ›</button></div>`;
+ live();$('nx2').onclick=()=>go(1)}
+function live(){const r=rows[cur];if(!r)return;$('live').innerHTML=badge(r)+` <small>${bn(done(r))}/${bn(N)} পরীক্ষার নম্বর দেওয়া · ${cls(r).why}</small>`}
+$('ent').addEventListener('click',e=>{const b=e.target.closest('.pl button');if(!b)return;const r=rows[cur],i=+b.dataset.i,v=+b.dataset.v;r.s[i]=r.s[i]===v?null:v;
+ b.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',+x.dataset.v===r.s[i]));live();save();renderRes()});
+$('ent').addEventListener('change',e=>{if(e.target.id=='rd'){rows[cur].rd=e.target.checked?1:0;live();save();renderRes()}});
+function go(d){if(!rows.length)return;if(cur+d>=rows.length){addStu();return}cur=Math.max(0,cur+d);renderIn();scrollTo(0,0)}
+function addStu(){rows.push(newRow());cur=rows.length-1;render();show('in')}
+$('pv').onclick=()=>go(-1);$('nx').onclick=()=>go(1);$('nw').onclick=addStu;
+$('code').onchange=e=>{if(rows[cur]){rows[cur].c=e.target.value.trim()||rows[cur].c;render()}};
+
+function renderRes(){renderHome();
+ const c1=rows.filter(r=>fin(r)==1).length,c2=rows.length-c1,cb=rows.filter(r=>cls(r).b&&fin(r)==1).length;
+ const F=[['all','মোট',rows.length],['1','ট্র্যাক ১',c1],['2','ট্র্যাক ২',c2],['b','সীমারেখা',cb]];
+ $('cards').innerHTML=F.map(f=>`<button data-f="${f[0]}" class="${flt==f[0]?'on':''}"><b>${bn(f[2])}</b>${f[1]}</button>`).join('');
+ $('map').innerHTML=rows.length?rows.map((r,i)=>{const k=cls(r);return`<button class="tile" data-ed="${i}"><b>${r.c}</b><s>${k.f.map(p=>`<i style="background:${col(p)}"></i>`).join('')}</s><s class="c">${k.c.map(p=>`<i style="background:${col(p)}"></i>`).join('')}</s></button>`}).join(''):'<small>ফল তুললে মানচিত্র তৈরি হবে।</small>';
+ const L=rows.map((r,i)=>[r,i]).filter(([r])=>flt=='all'||(flt=='b'?cls(r).b&&fin(r)==1:fin(r)==flt));
+ $('list').innerHTML=L.length?L.map(([r,i])=>{const k=cls(r);return`<div class="it" data-i="${i}"><div class="top"><b>${r.c}</b>${badge(r)}<span class="m">${k.f.map(p=>`<i class="${p<thr?'w':''}"><s style="width:${p}%"></s></i>`).join('')}</span></div><div class="det" hidden>${k.why}<div class="row"><select data-t="${i}" class="g1"><option value="">স্বয়ংক্রিয় ট্র্যাক</option><option value="1"${r.t==1?' selected':''}>শিক্ষকের সিদ্ধান্ত: ট্র্যাক ১</option><option value="2"${r.t==2?' selected':''}>শিক্ষকের সিদ্ধান্ত: ট্র্যাক ২</option></select></div><div class="row"><button class="alt g1" data-ed="${i}">নম্বর বদলান</button><button class="alt" data-del="${i}">মুছুন</button></div></div></div>`}).join(''):'<div class="empty">দেখানোর মতো কিছু নেই।</div>';
+ $('bars').innerHTML=rows.length?S.map((d,k)=>{const n=rows.filter(r=>cls(r).f[k]<thr).length,a=Math.round(n/rows.length*100);return`<div class="bar"><span>${d[0]} (ভিত্তিতে ঘাটতি)</span><div><i class="w" style="width:${a}%"></i></div><b>${bn(n)} জন</b></div>`}).join('')+'<hr style="border:0;border-top:1px solid var(--bd);margin:10px 0">'+T.map((t,i)=>{const a=Math.round(rows.reduce((s,r)=>s+(r.s[i]||0),0)/rows.length/5*100);return`<div class="bar"><span>${bn(i+1)}. ${t[1]}</span><div><i class="${a<thr?'w':''}" style="width:${a}%"></i></div><b>${bn(a)}%</b></div>`}).join(''):'<small>ফল তুললে দেখা যাবে।</small>';
+ $('fc').innerHTML=rows.map(r=>`<option>${r.c}</option>`).join('')||'<option>কোনো কোড নেই</option>'}
+$('cards').onclick=e=>{const b=e.target.closest('button');if(b){flt=b.dataset.f;renderRes()}};
+$('map').onclick=e=>{const b=e.target.closest('.tile');if(b){cur=+b.dataset.ed;renderIn();show('in')}};
+$('list').onclick=e=>{const t=e.target;
+ if(t.dataset.ed!=null){cur=+t.dataset.ed;renderIn();show('in');return}
+ if(t.dataset.del!=null){if(confirm('এই সারি মুছবেন?')){rows.splice(+t.dataset.del,1);render()}return}
+ const it=t.closest('.it');if(it&&!t.closest('select')){const d=it.querySelector('.det');d.hidden=!d.hidden}};
+$('list').onchange=e=>{const i=e.target.dataset.t;if(i!=null){rows[i].t=+e.target.value||null;render()}};
+function renderHome(){const c1=rows.filter(r=>fin(r)==1).length;$('hs').innerHTML=`<div><b>${bn(rows.length)}</b>শিক্ষার্থী</div><div><b>${bn(c1)}</b>ট্র্যাক ১</div><div><b>${bn(rows.length-c1)}</b>ট্র্যাক ২</div>`;
+ const c=$('cont');c.hidden=!rows.length;if(rows.length)c.textContent='চালিয়ে যান: '+rows[Math.min(cur,rows.length-1)].c+' ›'}
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));$('cont').onclick=()=>show('in');$('hh').onclick=()=>$('hd').showModal();
+function render(){renderIn();renderRes();$('thr').value=thr;save()}
+$('thr').onchange=e=>{thr=Math.max(10,Math.min(90,+e.target.value||50));render()};
+$('imp').onclick=()=>{let bad=0;$('paste').value.split('\n').forEach(l=>{const p=l.split(/[,\t]/).map(s=>s.trim()).filter((s,i)=>i==0||s!=='');if(!p[0])return;if(p.length<N+1){bad++;return}
+ const s=p.slice(1,N+1).map(num),ex=rows.find(r=>r.c==p[0]);ex?ex.s=s:rows.push({c:p[0],s,t:null,rd:0})});if(bad)alert(bad+' লাইনে ১২টি নম্বর নেই, বাদ গেছে।');$('paste').value='';render();show('res')};
+$('clr').onclick=()=>{if(confirm('সব ডেটা মুছে যাবে। নিশ্চিত?')){rows=[];cur=0;render()}};
+$('csv').onclick=async()=>{const h='কোড,'+T.map((t,i)=>(i+1)+'.'+S[t[0]][0]+': '+t[1]).join(',')+',পড়া-সহায়তা,ট্র্যাক,কারণ\n',d='\ufeff'+h+rows.map(r=>[r.c,...r.s.map(v=>v??''),r.rd?'হ্যাঁ':'',fin(r),cls(r).why].join(',')).join('\n');
+ try{const x=await window.claude.use('downloads');if(!x)throw 0;await x.save({filename:'stormap_result.csv',data:d})}catch(e){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([d],{type:'text/csv'}));a.download='stormap_result.csv';a.click()}};
+
+const SYS='তুমি একজন গ্রামীণ স্কুলশিক্ষকের সহকারী। সহজ বাংলায়, ছোট বাক্যে লেখো। শিক্ষার্থীর ফোন বা ইন্টারনেট নেই, তাই কাগজ, মাটি ও স্কুলের জিনিস ব্যবহারের কথা ভাবো। কোনো নাম বানাবে না। শেষে এক লাইনে লেখো: "শিক্ষক যাচাই করে ব্যবহার করুন।"\n\n';
+async function ask(p){if(!sample)return;ctl=new AbortController();$('stop').disabled=false;$('out').textContent='এআই ভাবছে...';$('out').scrollIntoView({behavior:'smooth',block:'center'});
+ try{await sample(SYS+p,{cache:false,signal:ctl.signal,onText:({text})=>{$('out').textContent=text}})}
+ catch(e){if(e.code!='cancelled')$('out').textContent=(e.text?e.text+'\n\n':'')+'সমস্যা: '+(e.code=='rate_limited'?'একটু পরে আবার চেষ্টা করুন।':e.code=='not_granted'?'অনুমতি দেওয়া হয়নি।':(e.message||'অজানা ত্রুটি'))}
+ $('stop').disabled=true}
+$('stop').onclick=()=>ctl&&ctl.abort();$('cp').onclick=()=>navigator.clipboard&&navigator.clipboard.writeText($('out').textContent);
+$('a1').onclick=()=>{if(!rows.length)return alert('আগে ফল তুলুন');
+ const dw=S.map((d,k)=>d[0]+' '+rows.filter(r=>cls(r).f[k]<thr).length+' জন').join(', '),ta=T.map((t,i)=>[S[t[0]][0]+': '+t[1],Math.round(rows.reduce((s,r)=>s+(r.s[i]||0),0)/rows.length/5*100)]).sort((a,b)=>a[1]-b[1]).slice(0,4).map(x=>x[0]+' ('+x[1]+'%)').join('; ');
+ ask(`ষষ্ঠ শ্রেণির ${rows.length} জনের গণিত, বিজ্ঞান ও আইসিটি ডায়াগনস্টিকের সারাংশ (শুধু সংখ্যা):\n- ট্র্যাক ১: ${rows.filter(r=>fin(r)==1).length} জন, ট্র্যাক ২: ${rows.filter(r=>fin(r)==2).length} জন\n- ভিত্তি-স্তরে সীমার নিচে: ${dw}\n- প্রশ্ন পড়ে শোনাতে হয়েছে: ${rows.filter(r=>r.rd).length} জনকে\n- ক্লাসে সবচেয়ে দুর্বল চার পরীক্ষা: ${ta}\nএকজন শিক্ষকের জন্য ৪ সপ্তাহের বাস্তবসম্মত সহায়তা পরিকল্পনা লেখো: সপ্তাহভিত্তিক ফোকাস (দুর্বল পরীক্ষা আগে), ছোট গ্রুপে কাজ, যাদের পড়তে সমস্যা তাদের জন্য মৌখিক পদ্ধতি, ট্র্যাক ১-এর এগিয়ে থাকাদের সহপাঠী-শিক্ষণে ব্যবহার, ৪ সপ্তাহ পর কী দেখে পুনর্মূল্যায়ন।`)};
+$('a2').onclick=()=>ask(`তৃতীয় থেকে পঞ্চম শ্রেণির স্তরে "${$('wa').value}" বিষয়ে${$('wt').value?' ('+$('wt').value+')':''} ১০টি সহজ অনুশীলনী প্রশ্ন বানাও, সহজ থেকে কঠিন ক্রমে। প্রথম ৩টি ছবি আঁকা বা হাতে ধরা জিনিস (মাটি, কাঠি, পাতা) দিয়ে করার মতো। শেষে উত্তর-সূত্র দাও।`);
+$('a3').onclick=()=>{const r=rows.find(x=>x.c==$('fc').value);if(!r)return;const k=cls(r);
+ ask(`এক শিক্ষার্থীর ডায়াগনস্টিক ফল: ${S.map((d,i)=>d[0]+' ভিত্তি '+k.f[i]+'%, শ্রেণির স্তর '+k.c[i]+'%').join('; ')}। ট্র্যাক ${fin(r)}। ${k.why}\nঅভিভাবকের জন্য ৫-৬ লাইনের উৎসাহব্যঞ্জক, সৎ ফিডব্যাক লেখো (লজ্জা দেবে না)। বাড়িতে ফোন ছাড়া করার মতো ২টি ছোট কাজ দাও।`)};
+(window.claude?window.claude.use('sample'):Promise.resolve(null)).then(s=>{if(s){sample=s;$('ai').hidden=false}else $('noai').hidden=false}).catch(()=>{$('noai').hidden=false});
+render();
+</script></body></html>
